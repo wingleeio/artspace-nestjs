@@ -7,6 +7,7 @@ import {
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
+import { UserDTO } from './dto/user.dto';
 
 @Entity()
 export class User extends BaseEntity {
@@ -31,13 +32,17 @@ export class User extends BaseEntity {
     return await bcrypt.compare(passwordToCompare, this.password);
   }
 
-  responseObject() {
-    const { id, username, email } = this;
-    const responseObject = {
+  responseObject(showToken: boolean = false) {
+    const { id, username, email, token } = this;
+    const responseObject: UserDTO = {
       id,
       username,
       email,
     };
+
+    if (showToken) {
+      responseObject.token = token;
+    }
 
     return responseObject;
   }

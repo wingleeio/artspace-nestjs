@@ -46,7 +46,7 @@ export class UserService {
         const user = this.UserRepository.create(newUser);
         // Save user if no errors.
         if (await this.UserRepository.save(user)) {
-          return this.findOne(user.id);
+          return user.responseObject(true);
         }
       } else {
         this.throwHttpException('Email already exists');
@@ -73,6 +73,8 @@ export class UserService {
     if (!user || !(await user.comparePassword(password))) {
       this.throwHttpException('Invalid login or password.');
     }
+
+    return user.responseObject(true);
   }
 
   isValidEmail(email: string) {
