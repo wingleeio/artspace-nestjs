@@ -4,37 +4,68 @@ import { Repository } from 'typeorm';
 import { UserInput } from './interface/user-input.interface';
 import { UserLogin } from './interface/user-login.interface';
 import { User } from './user.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private readonly UserRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) {}
 
-  async findAll() {
-    const users = await this.UserRepository.find();
-    return users.map(user => user.responseObject());
+  async findAll(page: number = 1) {
+    if (page < 1) {
+      page = 1;
+    }
+
+    const users = await this.UserRepository.find({
+      take: 15,
+      skip: 15 * (page - 1),
+    });
+
+    return await Promise.all(
+      users.map(user => {
+        return user.responseObject(false);
+      }),
+    );
   }
 
   async findOne(id: number) {
     const user = await this.UserRepository.findOne({ where: { id } });
     if (user) {
-      return await user.responseObject();
+      return await user.responseObject(false);
     }
   }
 
   async findByUsername(username: string) {
     const user = await this.UserRepository.findOne({ where: { username } });
     if (user) {
-      return await user.responseObject();
+      return await user.responseObject(false);
     }
   }
 
   async findByEmail(email: string) {
     const user = await this.UserRepository.findOne({ where: { email } });
     if (user) {
-      return await user.responseObject();
+      return await user.responseObject(false);
+    }
+  }
+
+  async findAllFollowers(
+    username: string,
+    page: number,
+    paginated: boolean = true,
+  ) {
+    const user = await this.UserRepository.findOne({ where: { username } });
+    if (user) {
+      const userResponseObject = await user.responseObject(
+        true,
+        page,
+        paginated,
+      );
+      const followers = userResponseObject.followers;
+      return followers;
     }
   }
 
@@ -46,7 +77,8 @@ export class UserService {
         const user = this.UserRepository.create(newUser);
         // Save user if no errors.
         if (await this.UserRepository.save(user)) {
-          return user.responseObject(true);
+          const payload = { username: user.username };
+          return { token: await this.jwtService.sign(payload) };
         }
       } else {
         this.throwHttpException('Email already exists');
@@ -74,7 +106,51 @@ export class UserService {
       this.throwHttpException('Invalid login or password.');
     }
 
-    return user.responseObject(true);
+    const payload = { username: user.username };
+    return { token: await this.jwtService.sign(payload) };
+  }
+
+  async follow(user: User, toFollow: string) {
+    const userToFollow = await this.UserRepository.findOne({
+      where: { username: toFollow },
+    });
+    const followers = await userToFollow.followers;
+
+    if (user.id === userToFollow.id) {
+      const msg = {
+        message: `Cannot follow yourself.`,
+      };
+      return msg;
+    }
+
+    if (!followers.find(follower => follower.id === user.id)) {
+      userToFollow.followers = Promise.resolve([...followers, user]);
+    }
+
+    if (await userToFollow.save()) {
+      const msg = {
+        message: `Followed ${userToFollow.username}.`,
+      };
+      return msg;
+    }
+  }
+
+  async unfollow(user: User, toUnfollow: string) {
+    const userToUnfollow = await this.UserRepository.findOne({
+      where: { username: toUnfollow },
+    });
+    const followers = await userToUnfollow.followers;
+
+    userToUnfollow.followers = Promise.resolve([
+      ...followers.filter(follower => follower.id !== user.id),
+    ]);
+
+    if (await userToUnfollow.save()) {
+      const msg = {
+        message: `Unfollowed ${userToUnfollow.username}.`,
+      };
+      return msg;
+    }
   }
 
   isValidEmail(email: string) {
