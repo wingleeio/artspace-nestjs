@@ -4,6 +4,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UserModule } from './users/user.module';
 import { WorksModule } from './works/works.module';
+import { CategoriesModule } from './categories/categories.module';
+import { CommentsModule } from './comments/comments.module';
+import { ImagesModule } from './images/images.module';
 
 @Module({
   imports: [
@@ -19,6 +22,9 @@ import { WorksModule } from './works/works.module';
       synchronize: true,
     }),
     WorksModule,
+    CategoriesModule,
+    CommentsModule,
+    ImagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

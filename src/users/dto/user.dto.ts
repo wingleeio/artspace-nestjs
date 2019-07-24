@@ -4,8 +4,12 @@ export class UserDTO {
   readonly username: string;
   readonly email: string;
   readonly avatar: string;
+  readonly cover: string;
   readonly followersCount: number;
   readonly followingCount: number;
+  readonly worksCount: number;
   followers?: any;
-  token?: string;
+  works?: any;
+  categories?: any;
+  comments?: any;
 }

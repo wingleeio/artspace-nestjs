@@ -4,9 +4,21 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
+    "@iconscout/react-unicons": "^0.0.1",
+    "axios": "^0.19.0",
     "babel-preset-react": "^6.24.1",
+    "css-loader": "^3.0.0",
+    "moment": "^2.24.0",
+    "node-sass": "^4.12.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
+    "redux-devtools-extension": "^2.13.8",
+    "redux-thunk": "^2.3.0",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
     "webpack": "^4.35.3"
   },
   "scripts": {

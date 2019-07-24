@@ -13,6 +13,8 @@ import {
 import * as bcrypt from 'bcrypt';
 import { UserDTO } from './dto/user.dto';
 import { Work } from '../works/works.entity';
+import { Category } from '../categories/categories.entity';
+import { Comment } from '../comments/comments.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -34,14 +36,25 @@ export class User extends BaseEntity {
   @Column({ nullable: true })
   avatar: string;
 
+  @Column({ nullable: true })
+  cover: string;
+
+  @Column({ default: '' })
+  bio: string;
+
   @OneToMany(type => Work, work => work.author)
   works: Promise<Work[]>;
 
+  @OneToMany(type => Category, category => category.author)
+  categories: Promise<Category[]>;
+
   @ManyToMany(type => Work)
-  @JoinTable()
   favourites: Promise<Work[]>;
 
-  @ManyToMany(type => User, user => user.following, { cascade: true })
+  @OneToMany(type => Comment, comment => comment.author)
+  comments: Promise<Comment[]>;
+
+  @ManyToMany(type => User, user => user.following)
   @JoinTable()
   followers: Promise<User[]>;
 
@@ -54,6 +67,9 @@ export class User extends BaseEntity {
   @RelationCount((user: User) => user.following)
   followingCount: number;
 
+  @RelationCount((user: User) => user.works)
+  worksCount: number;
+
   @BeforeInsert()
   async hashPassword() {
     this.password = await bcrypt.hash(this.password, 10);
@@ -64,9 +80,9 @@ export class User extends BaseEntity {
   }
 
   async responseObject(
-    showFollowers: boolean = true,
-    showFollowersPage: number = 1,
-    showFollowersPaginated: boolean = true,
+    showRelations: boolean = true,
+    showRelationsPage: number = 1,
+    showRelationsPaginated: boolean = true,
   ) {
     const {
       id,
@@ -74,8 +90,11 @@ export class User extends BaseEntity {
       username,
       email,
       avatar,
+      cover,
       followersCount,
       followingCount,
+      worksCount,
+      categories,
     } = this;
     const responseObject: UserDTO = {
       id,
@@ -83,15 +102,35 @@ export class User extends BaseEntity {
       username,
       email,
       avatar,
+      cover,
       followersCount,
       followingCount,
+      worksCount,
     };
 
-    if (this.followers && showFollowers === true) {
+    if (this.followers && showRelations === true) {
       responseObject.followers = await this.getFollowers(
-        showFollowersPage,
-        showFollowersPaginated,
+        showRelationsPage,
+        showRelationsPaginated,
       );
+    }
+
+    if (this.works && showRelations === true) {
+      responseObject.works = await this.getWorks(
+        showRelationsPage,
+        showRelationsPaginated,
+      );
+    }
+
+    if (this.comments && showRelations === true) {
+      responseObject.comments = await this.getComments(
+        showRelationsPage,
+        showRelationsPaginated,
+      );
+    }
+
+    if (categories && showRelations === true) {
+      responseObject.categories = await categories;
     }
 
     return responseObject;
@@ -110,6 +149,38 @@ export class User extends BaseEntity {
     } else {
       return await Promise.all(
         followers.map(follower => follower.responseObject(false)),
+      );
+    }
+  }
+
+  async getWorks(page: number = 1, paginated: boolean = true) {
+    const works = await this.works;
+    const worksPerPage = 15;
+
+    if (paginated) {
+      return await Promise.all(
+        works
+          .slice(worksPerPage * (page - 1), worksPerPage * page)
+          .map(work => work.responseObject()),
+      );
+    } else {
+      return await Promise.all(works.map(work => work.responseObject()));
+    }
+  }
+
+  async getComments(page: number = 1, paginated: boolean = true) {
+    const comments = await this.comments;
+    const commentsPerPage = 15;
+
+    if (paginated) {
+      return await Promise.all(
+        comments
+          .slice(commentsPerPage * (page - 1), commentsPerPage * page)
+          .map(work => work.responseObject()),
+      );
+    } else {
+      return await Promise.all(
+        comments.map(comment => comment.responseObject(false)),
       );
     }
   }

@@ -1,0 +1,48 @@
+%input {
+  color: $white;
+  padding: $form-padding;
+  margin-bottom: $default-spacing;
+  font-family: $main-font;
+  font-size: 12px;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+.control {
+  ::placeholder {
+    color: $dark-white;
+  }
+
+  // input {
+  //   width: 200px;
+  //   height: 35px;
+  // }
+
+  input[type='text'],
+  input[type='password'],
+  input[type='email'] {
+    @extend %input;
+    background-color: $blue-grey;
+  }
+
+  textarea {
+    @extend %input;
+    background-color: $blue-grey;
+    height: 100%;
+    resize: none;
+  }
+
+  input[type='text']:focus,
+  input[type='password']:focus,
+  input[type='email']:focus {
+    outline: solid 2px $primary-secondary-color;
+  }
+
+  textarea:focus {
+    outline: solid 2px $primary-secondary-color;
+  }
+
+  .input-error {
+    outline: solid 2px $dangerous-color;
+  }
+}

@@ -1,0 +1,27 @@
+.txt-is-primary {
+  color: $primary-color;
+}
+
+.txt-is-dangerous {
+  color: $dangerous-color;
+}
+
+.bg-is-dark-blue-grey {
+  background-color: $dark-blue-grey;
+}
+
+.centered {
+  justify-content: center;
+}
+
+.flex-between {
+  justify-content: space-between;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.hide {
+  display: none;
+}

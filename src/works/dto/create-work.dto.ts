@@ -7,5 +7,8 @@ export class WorkDTO {
   readonly title: string;
   readonly description: string;
   readonly imageUrl: string;
+  readonly favouriteCount: number;
+  readonly commentCount: number;
   favouritedBy?: any;
+  comments?: any;
 }

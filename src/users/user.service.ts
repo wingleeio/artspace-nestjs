@@ -14,15 +14,21 @@ export class UserService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async findAll(page: number = 1) {
+  async findAll(paginated: boolean = false, page: number = 1) {
     if (page < 1) {
       page = 1;
     }
 
-    const users = await this.UserRepository.find({
-      take: 15,
-      skip: 15 * (page - 1),
-    });
+    let options;
+
+    if (paginated) {
+      options = {
+        take: 15,
+        skip: 15 * (page - 1),
+      };
+    }
+
+    const users = await this.UserRepository.find(options);
 
     return await Promise.all(
       users.map(user => {
@@ -52,7 +58,7 @@ export class UserService {
     }
   }
 
-  async findAllFollowers(
+  async findAllUserFollowers(
     username: string,
     page: number,
     paginated: boolean = true,
@@ -66,6 +72,49 @@ export class UserService {
       );
       const followers = userResponseObject.followers;
       return followers;
+    }
+  }
+
+  async findAllUserWorks(
+    username: string,
+    page: number,
+    paginated: boolean = true,
+  ) {
+    const user = await this.UserRepository.findOne({ where: { username } });
+    if (user) {
+      const userResponseObject = await user.responseObject(
+        true,
+        page,
+        paginated,
+      );
+      const works = userResponseObject.works;
+      return works;
+    }
+  }
+
+  async findAllUserComments(
+    username: string,
+    page: number,
+    paginated: boolean = true,
+  ) {
+    const user = await this.UserRepository.findOne({ where: { username } });
+    if (user) {
+      const userResponseObject = await user.responseObject(
+        true,
+        page,
+        paginated,
+      );
+      const comments = userResponseObject.comments;
+      return comments;
+    }
+  }
+
+  async findAllUserCategories(username: string) {
+    const user = await this.UserRepository.findOne({ where: { username } });
+    if (user) {
+      const userResponseObject = await user.responseObject(true);
+      const categories = userResponseObject.categories;
+      return categories;
     }
   }
 
@@ -110,6 +159,10 @@ export class UserService {
     return { token: await this.jwtService.sign(payload) };
   }
 
+  async authenticate(user: User) {
+    return await user.responseObject(false);
+  }
+
   async follow(user: User, toFollow: string) {
     const userToFollow = await this.UserRepository.findOne({
       where: { username: toFollow },
@@ -150,6 +203,23 @@ export class UserService {
         message: `Unfollowed ${userToUnfollow.username}.`,
       };
       return msg;
+    }
+  }
+
+  async update(user: User, username: string, updatedUserInfo: any) {
+    const userToUpdate = await this.UserRepository.findOne({
+      where: { username },
+    });
+
+    if (!userToUpdate) {
+      throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (user.id === userToUpdate.id) {
+      userToUpdate.avatar = updatedUserInfo.avatar;
+      userToUpdate.cover = updatedUserInfo.cover;
+      userToUpdate.bio = updatedUserInfo.bio;
+      return await userToUpdate.save();
     }
   }
 
