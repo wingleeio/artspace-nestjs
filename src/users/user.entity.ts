@@ -33,7 +33,7 @@ export class User extends BaseEntity {
   @Column({ length: 128 })
   password: string;
 
-  @Column({ nullable: true })
+  @Column({ default: '/media/default.jpeg', nullable: true })
   avatar: string;
 
   @Column({ nullable: true })
@@ -91,6 +91,7 @@ export class User extends BaseEntity {
       email,
       avatar,
       cover,
+      bio,
       followersCount,
       followingCount,
       worksCount,
@@ -103,6 +104,7 @@ export class User extends BaseEntity {
       email,
       avatar,
       cover,
+      bio,
       followersCount,
       followingCount,
       worksCount,

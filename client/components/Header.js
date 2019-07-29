@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function Header() {
-  const { isAuthenticated } = useSelector(state => ({ ...state.user }));
+  const { user, isAuthenticated } = useSelector(state => ({ ...state.user }));
   return (
     <header>
       <nav>
@@ -34,11 +34,26 @@ function Header() {
               </li>
             </>
           ) : (
-            <li>
-              <Link to="/logout" className="login">
-                Logout
-              </Link>
-            </li>
+            <>
+              <li>
+                <Link to="/submit" className="login btn btn-success">
+                  Submit
+                </Link>
+              </li>
+              <li>
+                <Link to={`/profile/${user.username}`}>
+                  <img
+                    src={user.avatar}
+                    style={{ width: '32px', height: '32px' }}
+                  />
+                </Link>
+              </li>
+              <li>
+                <Link to="/logout" className="login">
+                  Logout
+                </Link>
+              </li>
+            </>
           )}
         </ul>
       </nav>

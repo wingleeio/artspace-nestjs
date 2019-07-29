@@ -13,7 +13,7 @@ import { JwtStrategy } from './jwt.strategy';
     JwtModule.register({
       secret: process.env.SECRET,
       signOptions: {
-        expiresIn: 36000,
+        expiresIn: 36000 * 10,
       },
     }),
     TypeOrmModule.forFeature([User]),

@@ -219,7 +219,8 @@ export class UserService {
       userToUpdate.avatar = updatedUserInfo.avatar;
       userToUpdate.cover = updatedUserInfo.cover;
       userToUpdate.bio = updatedUserInfo.bio;
-      return await userToUpdate.save();
+      const userUpdated = await userToUpdate.save();
+      return userUpdated.responseObject(false);
     }
   }
 

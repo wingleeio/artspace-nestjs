@@ -17,7 +17,7 @@ export const register = (body, dispatch) => {
   const config = {
     headers: { 'Content-Type': 'application/json' },
   };
-
+  console.log(body);
   axios
     .post('/api/users/register', body, config)
     .then(res => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import moment from 'moment';
 
 import * as Unicons from '@iconscout/react-unicons';
@@ -11,8 +11,8 @@ function ArtGroup({ groupTitle, works, history }) {
         <div className="images-container flex flex-wrap">
           {works !== undefined &&
             works.map(work => (
-              <>
-                <div className="image" key={work.id}>
+              <Fragment key={work.id}>
+                <div className="image">
                   <img src={work.imageUrl} alt={`${work.title} image`} />
                   {/* begin image overlay */}
                   <div
@@ -47,7 +47,7 @@ function ArtGroup({ groupTitle, works, history }) {
                   </div>
                   {/* end image overlay */}
                 </div>
-              </>
+              </Fragment>
             ))}
         </div>
       </div>

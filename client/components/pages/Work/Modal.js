@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-function Modal() {
+function Modal(props) {
+  const visible = () => (props.visibility === true ? 'show' : 'hide');
+
   return (
-    <div className="image-modal">
-      <img src={props.image} alt={`${props.image.title} image`} />
+    <div
+      className={`image-modal ${visible()}`}
+      onClick={() => props.setVisibility(false)}
+    >
+      <img src={props.image.imageUrl} alt={`${props.image.title} image`} />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const useForm = props => {
   const initialState = { ...props };
@@ -12,7 +12,14 @@ const useForm = props => {
     }));
   };
 
-  return [formData, handleChange];
+  const changeValue = (key, value) => {
+    setFormData(formData => ({
+      ...formData,
+      [key]: value,
+    }));
+  };
+
+  return [formData, handleChange, changeValue];
 };
 
 export default useForm;

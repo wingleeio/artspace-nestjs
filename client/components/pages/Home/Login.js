@@ -47,7 +47,7 @@ function Login() {
             Login
           </button>
           <Link
-            to="/"
+            to="/register"
             className="btn btn-grey-link register"
             // onClick={setForm('register')}
           >

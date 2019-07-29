@@ -4,6 +4,7 @@ import {
   GET_PROFILE_WORKS,
   ADD_COMMENT,
   LIKE_UNLIKE_WORK,
+  DELETE_COMMENT,
 } from '../actions/types';
 
 const INITIAL_STATE = {
@@ -65,6 +66,16 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         work: workToLikeOrUnlike,
+      };
+    case DELETE_COMMENT:
+      const workToDeleteComment = state.work;
+      const comments = workToDeleteComment.comments.filter(
+        comment => comment.id !== payload,
+      );
+      workToDeleteComment.comments = comments;
+      return {
+        ...state,
+        work: workToDeleteComment,
       };
     default:
       return state;

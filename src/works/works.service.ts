@@ -45,13 +45,6 @@ export class WorksService {
   async create(user: User, newWork: WorkDTO) {
     const work = new Work();
 
-    // this.WorkRepository.create({
-    //   author: Promise.resolve(user),
-    //   title: newWork.title,
-    //   description: newWork.description,
-    //   imageUrl: newWork.imageUrl,
-    // });
-
     work.author = Promise.resolve(user);
     work.title = newWork.title;
     work.description = newWork.description;

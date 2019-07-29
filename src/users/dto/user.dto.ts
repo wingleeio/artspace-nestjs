@@ -5,6 +5,7 @@ export class UserDTO {
   readonly email: string;
   readonly avatar: string;
   readonly cover: string;
+  readonly bio: string;
   readonly followersCount: number;
   readonly followingCount: number;
   readonly worksCount: number;

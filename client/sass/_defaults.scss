@@ -75,6 +75,8 @@ nav {
       margin-left: 50px;
       font-weight: 600;
       font-size: 0.8em;
+      display: flex;
+      align-items: center;
     }
   }
 }
@@ -144,7 +146,8 @@ footer {
     position: relative;
     flex-shrink: 0;
     width: calc(100% / 5 - 25px);
-    height: 200px;
+    // height: 200px;
+    height: calc(100% / 5 - 25px);
     max-height: 275px;
     margin: 24px 24px 0px 0px;
     @media screen and (max-width: 1200px) {
@@ -257,8 +260,13 @@ footer {
     padding: 24px 0px;
   }
   img {
-    width: 100%;
+    max-width: 100%;
   }
+}
+
+.work-image {
+  position: relative;
+  cursor: pointer;
 }
 
 .work-page-container {
@@ -296,19 +304,17 @@ footer {
   .comment-content {
     margin-left: $default-spacing;
   }
+  .work-action-icon {
+    transition: color 0.2s;
+  }
 
+  .work-action-icon:hover {
+    color: $dark-blue-grey;
+    cursor: pointer;
+  }
   .work-actions {
     display: flex;
     padding: $default-spacing 0px;
-
-    .work-action-icon {
-      transition: color 0.2s;
-    }
-
-    .work-action-icon:hover {
-      color: $dark-blue-grey;
-      cursor: pointer;
-    }
   }
 }
 
@@ -347,6 +353,55 @@ footer {
       object-fit: cover;
     }
   }
+}
+
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 10000;
+  background-color: rgba(0, 0, 0, 0.7);
+  overflow: auto;
+  img {
+    margin: auto;
+  }
+}
+
+//proile page
+
+.profile-header {
+  height: 45vh;
+  background-size: cover;
+}
+
+.profile-info {
+  display: flex;
+  align-items: flex-end;
+  height: 100%;
+}
+
+.basic-info {
+  display: flex;
+  p {
+    padding: 0;
+    margin: 0;
+  }
+  img {
+    width: 50px;
+    height: 50px;
+    justify-self: center;
+  }
+}
+
+.user-desc {
+  display: flex;
+  flex-direction: column;
+}
+
+.social-info {
+  display: flex;
 }
 
 // SPINNER

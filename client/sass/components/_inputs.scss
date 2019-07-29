@@ -20,7 +20,8 @@
 
   input[type='text'],
   input[type='password'],
-  input[type='email'] {
+  input[type='email'],
+  input[type='file'] {
     @extend %input;
     background-color: $blue-grey;
   }
@@ -34,7 +35,8 @@
 
   input[type='text']:focus,
   input[type='password']:focus,
-  input[type='email']:focus {
+  input[type='email']:focus,
+  input[type='file']:focus {
     outline: solid 2px $primary-secondary-color;
   }
 

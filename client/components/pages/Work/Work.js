@@ -4,8 +4,8 @@ import {
   GET_WORK,
   GET_PROFILE_WORKS,
   LIKE_UNLIKE_WORK,
+  DELETE_COMMENT,
 } from '../../../actions/types';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from '../../Spinner';
 import moment from 'moment';
@@ -21,6 +21,7 @@ function Work({ match, history }) {
       ...state.user,
     }),
   );
+
   const dispatch = useDispatch();
 
   const checkUserHasFavourited = () => {
@@ -40,13 +41,54 @@ function Work({ match, history }) {
       };
       axios
         .post(`/api/works/likeunlike/${work.id}`, '', config)
-        .then(res => {
+        .then(res =>
           dispatch({
             type: LIKE_UNLIKE_WORK,
             payload: user,
-          });
-        })
+          }),
+        )
         .catch(err => console.log(err));
+    }
+  };
+
+  const deleteWork = () => {
+    if (isAuthenticated) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const confirm = prompt(
+        'Please confirm you want to delete the image by typing confirm.',
+      );
+      if (confirm === 'confirm') {
+        axios
+          .delete(`/api/works/delete/${work.id}`, config)
+          .then(res => history.push('/'))
+          .catch(err => console.log(err));
+      }
+    }
+  };
+
+  const deleteComment = commentId => {
+    if (isAuthenticated) {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+
+      const confirm = prompt(
+        'Please confirm you want to delete the comment by typing confirm.',
+      );
+
+      if (confirm === 'confirm') {
+        axios
+          .delete(`/api/comments/delete/${commentId}`, config)
+          .then(res => {
+            dispatch({
+              type: DELETE_COMMENT,
+              payload: commentId,
+            });
+          })
+          .catch(err => console.log(err));
+      }
     }
   };
 
@@ -90,11 +132,19 @@ function Work({ match, history }) {
   return (
     <>
       <div className="work-container">
-        <div className="container-padding-both">
-          <img src={work.imageUrl} onClick={() => setVisibility(true)}></img>
-          {visibility ? <Modal image={work.imageUrl} /> : ''}
+        <div className="container-padding-both work-image">
+          <img
+            src={work.imageUrl}
+            onClick={() => setVisibility(true)}
+            // style={{ maxHeight: '25px', objectFit: 'cover' }}
+          ></img>
         </div>
       </div>
+      <Modal
+        image={work}
+        visibility={visibility}
+        setVisibility={setVisibility}
+      />
       <div className="work-page-container">
         <div className="container-padding-both">
           <h3>{work.title}</h3>
@@ -131,6 +181,15 @@ function Work({ match, history }) {
               />{' '}
               {work.favouriteCount}
             </div>
+            {isAuthenticated && user.id === work.author.id && (
+              <div className="work-action">
+                <Unicons.UilTrashAlt
+                  onClick={deleteWork}
+                  className={`work-action-icon`}
+                />
+              </div>
+            )}
+
             {/* <div className="work-action">
               <Unicons.UilShareAlt className="work-action-icon" />
             </div> */}
@@ -165,12 +224,24 @@ function Work({ match, history }) {
                   <p className="comment-content">
                     <small>{comment.content}</small>
                   </p>
+                  {isAuthenticated && user.id === comment.author.id && (
+                    <div
+                      className="work-action"
+                      style={{ paddingTop: '24px', marginLeft: '24px' }}
+                    >
+                      <Unicons.UilTrashAlt
+                        size="16"
+                        onClick={() => deleteComment(comment.id)}
+                        className={`work-action-icon`}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
           ))}
         </div>
-        <div className="container-padding">
+        <div className="container-padding" style={{ paddingTop: '24px' }}>
           <h3>
             More by{' '}
             <a href="#" className="txt-is-primary">
