@@ -98,7 +98,7 @@ function Register() {
         <div className="button-group">
           <button
             type="submit"
-            className="btn btn-primary-outline register"
+            className="btn btn-primary-outline register-register"
             onClick={handleSubmit}
           >
             Register

@@ -41,14 +41,14 @@ function Login() {
         <div className="button-group">
           <button
             type="submit"
-            className="btn btn-primary-outline login"
+            className="btn btn-primary-outline login-login"
             onClick={handleSubmit}
           >
             Login
           </button>
           <Link
             to="/register"
-            className="btn btn-grey-link register"
+            className="btn btn-grey-link login-register"
             // onClick={setForm('register')}
           >
             Register
