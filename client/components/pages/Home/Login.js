@@ -14,7 +14,7 @@ function Login() {
   return (
     <div className="login-container">
       <h1>
-        Welcome back to <span className="txt-is-primary">Art.</span>Space
+        Welcome to <span className="txt-is-primary">Art.</span>Space
       </h1>
       <p style={{ minHeight: '20px' }}>
         {/* <small className="txt-is-dangerous">{errorMsg}</small> */}

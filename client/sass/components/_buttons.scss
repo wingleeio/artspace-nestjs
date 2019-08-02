@@ -12,6 +12,14 @@ button {
   .btn {
     margin-right: $default-spacing;
   }
+  @media only screen and (max-width: 1260px) {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    .btn {
+      margin-right: 0;
+    }
+  }
 }
 
 .btn {

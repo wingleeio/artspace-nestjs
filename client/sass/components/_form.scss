@@ -1,4 +1,9 @@
 .form {
   display: flex;
   flex-direction: column;
+  @media only screen and (max-width: 1260px) {
+    .register {
+      margin-top: 24px;
+    }
+  }
 }

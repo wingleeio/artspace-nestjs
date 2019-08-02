@@ -45,7 +45,7 @@ function Submit({ history }) {
   };
 
   return (
-    <div className="container">
+    <div className="container" style={{ padding: '0px 24px' }}>
       <form
         className="form"
         onSubmit={handleSubmit}

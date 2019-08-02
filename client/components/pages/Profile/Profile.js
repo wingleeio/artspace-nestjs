@@ -127,7 +127,7 @@ function Profile({ match, history }) {
               </div>
             </div>
             <div className="social-info">
-              <div className="column">
+              <div className="column button-edit">
                 {isAuthenticated && user.id === profile.id ? (
                   <div className="edit-profile">
                     <Link to="/editprofile">
