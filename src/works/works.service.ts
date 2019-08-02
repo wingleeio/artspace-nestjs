@@ -37,6 +37,38 @@ export class WorksService {
     };
   }
 
+  async findAllByFollowing(user: User) {
+    const following = await user.following;
+    const followingWorks = await Promise.all(
+      following.map(async u => {
+        const fw = await u.works;
+        return Promise.all(fw.map(async w => await w.responseObject()));
+      }),
+    );
+
+    const works = followingWorks.reduce((acc, val) => acc.concat(val), []);
+    return { work: works.sort((a, b) => b.id - a.id), count: works.length };
+  }
+
+  async findAllByFollowingPaginated(user: User, page) {
+    const following = await user.following;
+    const followingWorks = await Promise.all(
+      following.map(async u => {
+        const fw = await u.works;
+        return Promise.all(fw.map(async w => await w.responseObject()));
+      }),
+    );
+
+    const works = followingWorks.reduce((acc, val) => acc.concat(val), []);
+
+    return {
+      works: works
+        .sort((a, b) => b.id - a.id)
+        .slice(25 * (page - 1), 25 * (page - 1) + 25),
+      count: works.length,
+    };
+  }
+
   async findOne(id) {
     const work = await this.WorkRepository.findOne({ where: { id } });
     return await work.responseObject();

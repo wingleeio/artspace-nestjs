@@ -5,13 +5,19 @@ import {
   ADD_COMMENT,
   LIKE_UNLIKE_WORK,
   DELETE_COMMENT,
+  GET_WORKS_BY_FOLLOWING,
+  SHOW_FOLLOWING,
+  SHOW_LATEST,
 } from '../actions/types';
 
 const INITIAL_STATE = {
   work: null,
   newWorks: [],
+  followingWorks: [],
   profileWorks: [],
-  worksCount: 0,
+  newWorksCount: 0,
+  followingWorksCount: 0,
+  showFollowing: true,
 };
 
 export default function(state = INITIAL_STATE, action) {
@@ -21,7 +27,13 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         newWorks: payload.works,
-        worksCount: payload.count,
+        newWorksCount: payload.count,
+      };
+    case GET_WORKS_BY_FOLLOWING:
+      return {
+        ...state,
+        followingWorks: payload.works,
+        followingWorksCount: payload.count,
       };
     case GET_PROFILE_WORKS:
       return {
@@ -40,6 +52,16 @@ export default function(state = INITIAL_STATE, action) {
       return {
         ...state,
         work,
+      };
+    case SHOW_FOLLOWING:
+      return {
+        ...state,
+        showFollowing: true,
+      };
+    case SHOW_LATEST:
+      return {
+        ...state,
+        showFollowing: false,
       };
     case LIKE_UNLIKE_WORK:
       const workToLikeOrUnlike = state.work;

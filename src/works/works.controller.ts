@@ -21,6 +21,18 @@ export class WorksController {
     return this.workService.findAll();
   }
 
+  @Get('following')
+  @UseGuards(AuthGuard())
+  findAllByFollowing(@Req() req) {
+    return this.workService.findAllByFollowing(req.user);
+  }
+
+  @Get('following/:page')
+  @UseGuards(AuthGuard())
+  findAllByFollowingPaginated(@Req() req, @Param('page') page) {
+    return this.workService.findAllByFollowingPaginated(req.user, page);
+  }
+
   @Get(':id')
   findOne(@Param('id') id) {
     return this.workService.findOne(id);

@@ -38,7 +38,7 @@ export class Work extends BaseEntity {
   @ManyToMany(type => Category, category => category.works)
   categories: Category;
 
-  @ManyToMany(type => User)
+  @ManyToMany(type => User, user => user.favourites)
   @JoinTable()
   favouritedBy: Promise<User[]>;
 

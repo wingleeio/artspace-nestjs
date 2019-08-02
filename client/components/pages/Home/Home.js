@@ -9,7 +9,6 @@ function Home({ match, history }) {
     if (isAuthenticated) {
       history.push('/browse');
     }
-    console.log(match.path);
   }, [isAuthenticated]);
   return (
     <div className="full-width-container h-100-hero flex">

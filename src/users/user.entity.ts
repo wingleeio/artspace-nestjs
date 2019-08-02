@@ -48,7 +48,7 @@ export class User extends BaseEntity {
   @OneToMany(type => Category, category => category.author)
   categories: Promise<Category[]>;
 
-  @ManyToMany(type => Work)
+  @ManyToMany(type => Work, work => work.favouritedBy)
   favourites: Promise<Work[]>;
 
   @OneToMany(type => Comment, comment => comment.author)
@@ -92,6 +92,7 @@ export class User extends BaseEntity {
       avatar,
       cover,
       bio,
+      favourites,
       followersCount,
       followingCount,
       worksCount,
@@ -126,6 +127,13 @@ export class User extends BaseEntity {
 
     if (this.comments && showRelations === true) {
       responseObject.comments = await this.getComments(
+        showRelationsPage,
+        showRelationsPaginated,
+      );
+    }
+
+    if (this.favourites && showRelations === true) {
+      responseObject.favourites = await this.getFavourites(
         showRelationsPage,
         showRelationsPaginated,
       );
@@ -183,6 +191,22 @@ export class User extends BaseEntity {
     } else {
       return await Promise.all(
         comments.map(comment => comment.responseObject(false)),
+      );
+    }
+  }
+
+  async getFavourites(page: number = 1, paginated: boolean = true) {
+    const favourites = await this.favourites;
+    const favouritesPerPage = 15;
+    if (paginated) {
+      return await Promise.all(
+        favourites
+          .slice(favouritesPerPage * (page - 1), favouritesPerPage * page)
+          .map(work => work.responseObject()),
+      );
+    } else {
+      return await Promise.all(
+        favourites.map(favourite => favourite.responseObject()),
       );
     }
   }

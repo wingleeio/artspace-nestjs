@@ -22,6 +22,18 @@ body {
   flex-wrap: wrap;
 }
 
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
 .h-100-hero {
   height: calc(100vh - 80px);
   max-height: 100%;
@@ -78,14 +90,34 @@ nav {
       display: flex;
       align-items: center;
     }
+    .desktop {
+      @media screen and (max-width: 700px) {
+        display: none;
+      }
+    }
+    .burger {
+      justify-content: center;
+      div > div {
+        background-color: white;
+        width: 32px;
+        height: 2px;
+        margin: 4px;
+      }
+    }
+    .mobile {
+      display: none;
+      @media screen and (max-width: 700px) {
+        display: flex;
+      }
+    }
   }
 }
 
 footer {
   position: relative;
   bottom: 0;
-  min-height: 30vh;
-  max-height: 35vh;
+  min-height: 40vh;
+  // max-height: 40vh;
   padding: $default-spacing;
   color: darken($dark-white, 25%);
   background-color: darken($dark-blue-grey, 10%);
@@ -94,6 +126,8 @@ footer {
     margin: 0;
   }
   p {
+    padding: 0;
+    margin: 0;
     color: darken($dark-white, 50%);
   }
   ul {
@@ -109,13 +143,51 @@ footer {
   }
   .container {
     display: flex;
+    flex-direction: column;
+    padding-top: 24px;
   }
-  // .row {
-  //   display: flex;
-  //   margin-top: 24px;
-  // }
+  .row {
+    display: flex;
+    width: 100%;
+    margin-top: 24px;
+    @media only screen and (max-width: 599px) {
+      flex-direction: column;
+      height: auto;
+    }
+  }
   .column {
-    width: calc(100% / 3);
+    width: calc(100% / 2);
+    @media only screen and (max-width: 599px) {
+      width: 100%;
+    }
+  }
+  .footer-about {
+    padding-right: 200px;
+    padding-top: 12px;
+    @media only screen and (max-width: 979px) {
+      padding-right: 100px;
+    }
+    @media only screen and (max-width: 799px) {
+      padding-right: 50px;
+    }
+    @media only screen and (max-width: 599px) {
+      padding-right: 0px;
+    }
+  }
+  .footer-contact {
+    text-align: right;
+    @media only screen and (max-width: 599px) {
+      text-align: left;
+    }
+  }
+  .social-icons {
+    padding-top: 12px;
+    .footer-icon {
+      padding-right: 24px;
+    }
+    @media only screen and (max-width: 599px) {
+      padding-bottom: 12px;
+    }
   }
 }
 
@@ -141,13 +213,15 @@ footer {
 }
 
 .images-container {
+  // min-height: 100%;
   height: auto;
   .image {
     position: relative;
     flex-shrink: 0;
     width: calc(100% / 5 - 25px);
-    // height: 200px;
-    height: calc(100% / 5 - 25px);
+    // height: calc(100% / 5 - 25px);
+    // height: 0;
+    // padding-bottom: calc(100% / 5 - 25px);
     max-height: 275px;
     margin: 24px 24px 0px 0px;
     @media screen and (max-width: 1200px) {
@@ -280,6 +354,9 @@ footer {
     padding: 0px 0px 24px 0px;
     margin: 0px;
   }
+  h4 {
+    color: $primary-color;
+  }
   .avatar {
     width: 48px;
     height: 48px;
@@ -330,7 +407,7 @@ footer {
 .more-works-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: flex-start;
   .more-work {
     position: relative;
     width: calc(100% / 4 - 24px);
@@ -371,22 +448,67 @@ footer {
 
 //proile page
 
+.profile-works {
+  .art-group-container {
+    min-height: 50vh;
+    padding: 0px 0px 24px 12px;
+  }
+}
+
+.profile-gradient {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.7) 0%,
+    rgba(255, 255, 255, 0) 65%
+  );
+}
+
 .profile-header {
-  height: 45vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  height: 55vh;
+  max-height: 60vh;
   background-size: cover;
+  @media only screen and (max-width: 575px) {
+    min-height: 60vh;
+    height: auto;
+    max-height: 70vh;
+  }
 }
 
 .profile-info {
   display: flex;
+  justify-content: space-between;
   align-items: flex-end;
-  height: 100%;
+  width: 100%;
+  height: 60%;
+  @media only screen and (max-width: 575px) {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  h2,
+  p {
+    padding: 0;
+    margin: 0;
+  }
+  .column {
+    text-align: center;
+  }
 }
 
 .basic-info {
   display: flex;
-  p {
-    padding: 0;
-    margin: 0;
+  // height: 50px;
+  width: 40%;
+  // justify-content: center;
+  align-items: center;
+  padding: $default-spacing;
+  @media only screen and (max-width: 575px) {
+    flex-direction: column;
+    padding: 0px;
+    text-align: center;
   }
   img {
     width: 50px;
@@ -398,10 +520,70 @@ footer {
 .user-desc {
   display: flex;
   flex-direction: column;
+  padding-left: 24px;
+  @media only screen and (max-width: 575px) {
+    padding: 24px 0px 0px 0px;
+  }
+}
+
+.edit-profile {
+  // display: flex;
+  // justify-content: flex-end;
+  // align-self: flex-end;
+  // height: 100%;
+  padding: 12px 24px 0px 0px;
+  a {
+    color: $primary-color;
+  }
 }
 
 .social-info {
   display: flex;
+  padding: $default-spacing;
+  p {
+    padding-left: 48px;
+  }
+  @media only screen and (max-width: 575px) {
+    flex-direction: column;
+    padding: 24px 0px;
+    .social {
+      order: 1;
+    }
+    p {
+      padding: 0px 24px;
+    }
+  }
+}
+
+.tab-toggle {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 24px 24px 0px 0px;
+  a {
+    padding: $button-padding;
+    margin: 0px;
+    cursor: pointer;
+  }
+}
+
+.toggle-follow-button {
+  padding-top: 12px;
+  height: 100%;
+  .unfollow-button {
+    padding: $button-padding;
+    // background-color: $dangerous-color;
+  }
+  .follow-button {
+    padding: $button-padding;
+    // background-color: $primary-color;
+  }
+  a {
+    cursor: pointer;
+  }
+  @media only screen and (max-width: 575px) {
+    order: 2;
+  }
 }
 
 // SPINNER

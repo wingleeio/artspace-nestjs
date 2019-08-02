@@ -88,7 +88,7 @@ export class UserService {
         paginated,
       );
       const works = userResponseObject.works;
-      return works;
+      return works.sort((a, b) => b.id - a.id);
     }
   }
 
@@ -223,6 +223,52 @@ export class UserService {
       return userUpdated.responseObject(false);
     }
   }
+
+  async findFavourites(
+    username: string,
+    page: number,
+    paginated: boolean = true,
+  ) {
+    const user = await this.UserRepository.findOne({ where: { username } });
+    if (user) {
+      const userResponseObject = await user.responseObject(
+        true,
+        page,
+        paginated,
+      );
+      const favourites = userResponseObject.favourites;
+
+      return favourites.sort((a, b) => b.id - a.id);
+    }
+  }
+
+  async isFollowing(user: User, username: string) {
+    const userToCheck = await this.UserRepository.findOne({
+      where: { username },
+    });
+
+    const followers = await userToCheck.followers;
+
+    const isFollower = followers.find(follower => user.id === follower.id);
+
+    if (isFollower) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  // async findFavourites(username: string) {
+  //   const user = await this.UserRepository.findOne({
+  //     where: { username },
+  //   });
+
+  //   const favourites = await user.favourites;
+
+  //   return await Promise.all(
+  //     favourites.map(favourite => favourite.responseObject()),
+  //   );
+  // }
 
   isValidEmail(email: string) {
     if (email) {

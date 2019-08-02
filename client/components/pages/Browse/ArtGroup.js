@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import * as Unicons from '@iconscout/react-unicons';
 
-function ArtGroup({ groupTitle, works, history }) {
+function ArtGroup({ works, history }) {
   return (
     <section className="art-group-container">
       {/* <h1 className="art-group-title">{groupTitle}</h1> */}

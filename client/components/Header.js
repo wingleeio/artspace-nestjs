@@ -8,26 +8,26 @@ function Header() {
     <header>
       <nav>
         <div className="logo">
-          <Link to="/">
+          <Link to="/browse">
             {/* <img src="#" /> */}
             <span className="txt-is-primary">ART.</span>SPACE
           </Link>
         </div>
         <ul>
-          <li>
+          <li className="desktop">
             <Link to="/browse">Browse</Link>
           </li>
-          <li>
+          {/* <li>
             <Link to="/">Search</Link>
-          </li>
+          </li> */}
           {!isAuthenticated ? (
             <>
-              <li>
+              <li className="desktop">
                 <Link to="/" type="submit" className="register">
                   Register
                 </Link>
               </li>
-              <li>
+              <li className="desktop">
                 <Link to="/login" className="login">
                   Login
                 </Link>
@@ -35,7 +35,7 @@ function Header() {
             </>
           ) : (
             <>
-              <li>
+              <li className="desktop">
                 <Link to="/submit" className="login btn btn-success">
                   Submit
                 </Link>
@@ -48,13 +48,20 @@ function Header() {
                   />
                 </Link>
               </li>
-              <li>
+              <li className="desktop">
                 <Link to="/logout" className="login">
                   Logout
                 </Link>
               </li>
             </>
           )}
+          <li className="mobile burger">
+            <div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+          </li>
         </ul>
       </nav>
     </header>

@@ -9,6 +9,7 @@ export class UserDTO {
   readonly followersCount: number;
   readonly followingCount: number;
   readonly worksCount: number;
+  favourites?: any;
   followers?: any;
   works?: any;
   categories?: any;

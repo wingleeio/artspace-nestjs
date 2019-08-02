@@ -112,4 +112,15 @@ export class UserController {
   authenticate(@Req() req) {
     return this.userService.authenticate(req.user);
   }
+
+  @Get('/:username/favourites')
+  findFavourites(@Param('username') username) {
+    return this.userService.findFavourites(username, 0, false);
+  }
+
+  @Get('/:username/isfollowing')
+  @UseGuards(AuthGuard())
+  isFollowing(@Req() req, @Param('username') username) {
+    return this.userService.isFollowing(req.user, username);
+  }
 }

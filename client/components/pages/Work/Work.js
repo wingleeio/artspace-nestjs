@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   GET_WORK,
   GET_PROFILE_WORKS,
@@ -149,13 +150,17 @@ function Work({ match, history }) {
         <div className="container-padding-both">
           <h3>{work.title}</h3>
           <div className="author-info">
-            <img
-              className="avatar"
-              src={work.author.avatar}
-              alt={`avatar of ${work.author.username}`}
-            />
+            <Link to={`/profile/${work.author.username}`}>
+              <img
+                className="avatar"
+                src={work.author.avatar}
+                alt={`avatar of ${work.author.username}`}
+              />
+            </Link>
             <div className="author-info-text">
-              <h4>{work.author.username}</h4>
+              <Link to={`/profile/${work.author.username}`}>
+                <h4>{work.author.username}</h4>
+              </Link>
               <small>{work.author.followersCount} Followers</small>
             </div>
           </div>
@@ -206,14 +211,18 @@ function Work({ match, history }) {
               key={comment.id}
             >
               <div className="author-info">
-                <img
-                  className="avatar"
-                  src={comment.author.avatar}
-                  alt={`avatar of ${comment.author.username}`}
-                />
+                <Link to={`/profile/${comment.author.username}`}>
+                  <img
+                    className="avatar"
+                    src={comment.author.avatar}
+                    alt={`avatar of ${comment.author.username}`}
+                  />
+                </Link>
                 <div>
                   <div className="author-info-text">
-                    <h4>{comment.author.username}</h4>
+                    <Link to={`/profile/${comment.author.username}`}>
+                      <h4>{comment.author.username}</h4>
+                    </Link>
                     <small>
                       Commented on{' '}
                       {moment(comment.published).format(
@@ -244,9 +253,12 @@ function Work({ match, history }) {
         <div className="container-padding" style={{ paddingTop: '24px' }}>
           <h3>
             More by{' '}
-            <a href="#" className="txt-is-primary">
+            <Link
+              to={`/profile/${work.author.username}`}
+              className="txt-is-primary"
+            >
               {work.author.username}
-            </a>
+            </Link>
           </h3>
           <div className="more-works-container">
             {newProfileWorks.map(work => {
