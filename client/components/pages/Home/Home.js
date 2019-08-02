@@ -11,7 +11,7 @@ function Home({ match, history }) {
     }
   }, [isAuthenticated]);
   return (
-    <div className="full-width-container h-100-hero flex front-page-container">
+    <div className="full-width-container flex front-page-container">
       <div
         className="image-mosaic-container"
         style={{
