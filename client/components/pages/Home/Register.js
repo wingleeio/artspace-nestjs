@@ -105,7 +105,7 @@ function Register() {
           </button>
           <Link
             to="/login"
-            className="btn btn-grey-link login"
+            className="btn btn-grey-link register-login"
             // onClick={setForm('login')}
           >
             Login

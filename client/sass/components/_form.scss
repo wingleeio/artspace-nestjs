@@ -2,7 +2,8 @@
   display: flex;
   flex-direction: column;
   @media only screen and (max-width: 1260px) {
-    .login-register {
+    .login-register,
+    .register-login {
       margin-top: 24px;
     }
   }
