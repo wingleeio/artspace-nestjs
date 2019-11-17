@@ -9,25 +9,25 @@ import { CommentsModule } from './comments/comments.module';
 import { ImagesModule } from './images/images.module';
 
 @Module({
-  imports: [
-    UserModule,
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      // url: process.env.DATABASE_URL,
-      host: 'localhost',
-      port: 5432,
-      username: 'winglee',
-      password: '',
-      database: 'aaartspace',
-      entities: [__dirname + '/**/*.entity{.ts,.js}'],
-      synchronize: true,
-    }),
-    WorksModule,
-    CategoriesModule,
-    CommentsModule,
-    ImagesModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+	imports: [
+		UserModule,
+		TypeOrmModule.forRoot({
+			type: 'postgres',
+			url: process.env.DATABASE_URL,
+			// host: 'localhost',
+			// port: 5432,
+			// username: 'winglee',
+			// password: '',
+			// database: 'aaartspace',
+			entities: [__dirname + '/**/*.entity{.ts,.js}'],
+			synchronize: true,
+		}),
+		WorksModule,
+		CategoriesModule,
+		CommentsModule,
+		ImagesModule,
+	],
+	controllers: [AppController],
+	providers: [AppService],
 })
 export class AppModule {}
